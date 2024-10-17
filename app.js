@@ -1,4 +1,5 @@
 require("dotenv").config();
+const path = require("path");
 
 const express = require("express");
 
@@ -11,7 +12,8 @@ app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/category", categoryRouter);
-app.use("/item", itemRouter);
+// app.use("/item", itemRouter);
+app.use("/", (req, res) => res.send("HI"));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server listening on ${PORT}`));

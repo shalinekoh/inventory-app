@@ -7,6 +7,7 @@
   </head>
   <body>
     <h1><%= title %></h1>
+    <%- include("forms/create-category", {parentId : parentId}) %>
     <ul>
       <!-- Display subcategories -->
       <% if (categories.length > 0) { %> <% categories.forEach((category) => {

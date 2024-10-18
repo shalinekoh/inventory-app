@@ -9,21 +9,31 @@ categoryRouter.get("/", async (req, res) => {
     categories: categories,
     title: "Categories",
     items: [],
+    parentId: null,
   });
 });
+
+categoryRouter.post("/", (req, res) => {
+  res.redirect(`/category`);
+});
+
 categoryRouter.get("/:categoryId", async (req, res) => {
-  const categories = await db.getCategories(req.params.categoryId);
-  const items = await db.getItems(req.params.categoryId);
-  const categoryName = await db.getCategorybyID(req.params.categoryId);
+  const parentId = req.params.categoryId;
+  const categories = await db.getCategories(parentId);
+  const items = await db.getItems(parentId);
+  const categoryName = await db.getCategorybyID(parentId);
   res.render("categoryView", {
     categories: categories,
     title: categoryName.name,
     items: items,
+    parentId: parentId,
   });
 });
 
 // add new category
-categoryRouter.post("/:categoryId", () => {});
+categoryRouter.post("/:categoryId", (req, res) => {
+  res.redirect(`/category/${req.params.categoryId}`);
+});
 
 // display the form to add new category
 categoryRouter.get("/:categoryId/subcategories", () => {});

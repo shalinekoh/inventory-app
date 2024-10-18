@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Document</title>
+  </head>
+  <body>
+    <button type="button" id="categoryBtn">Add Category</button>
+    <dialog id="catDialog">
+      <h1>Add new category</h1>
+      <form method="POST" action="/category/<%= parentId %>">
+        <input
+          type="text"
+          name="categoryName"
+          placeholder="Enter the name here"
+          required
+        />
+        <button type="button" id="cancelBtn">Cancel</button>
+        <button type="submit">Enter</button>
+      </form>
+    </dialog>
+    <script>
+      const catDialog = document.getElementById("catDialog");
+      const closeBtn = document.getElementById("cancelBtn");
+      const categoryBtn = document.getElementById("categoryBtn");
+
+      categoryBtn.addEventListener("click", () => {
+        catDialog.showModal();
+      });
+
+      closeBtn.addEventListener("click", () => {
+        catDialog.close();
+      });
+    </script>
+  </body>
+</html>

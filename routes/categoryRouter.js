@@ -41,7 +41,7 @@ categoryRouter.post("/:categoryId?", async (req, res) => {
 categoryRouter.post("/:categoryId?/delete", async (req, res) => {
   const id = req.params.categoryId;
   const parentId = await db.deleteCategory(id);
-
+  // res.redirect("/category");
   // Check if parentId exists and redirect accordingly
   if (parentId) {
     res.redirect(`/category/${parentId}`);

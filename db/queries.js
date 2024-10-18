@@ -50,10 +50,40 @@ const addCategory = async (name, parentId) => {
   }
 };
 
-const deleteCategory = async (id) => {
+// const deleteCategory = async (id) => {
+//   const deletedCat = await prisma.category.delete({
+//     where: {
+//       id: id,
+//     },
+//   });
+//   return deletedCat.parentId;
+// };
+
+const deleteCategory = async (categoryId) => {
+  const parentId = getCategorybyID(categoryId).parentId;
+  // First, delete all items associated with the current category
+  await prisma.item.deleteMany({
+    where: {
+      categoryId: categoryId,
+    },
+  });
+
+  // Fetch all subcategories of the current category
+  const subcategories = await prisma.category.findMany({
+    where: {
+      parentId: categoryId,
+    },
+  });
+
+  // Recursively delete all subcategories
+  for (const subcategory of subcategories) {
+    await deleteCategory(subcategory.id); // Recursive call
+  }
+
+  // Finally, delete the category itself
   const deletedCat = await prisma.category.delete({
     where: {
-      id: id,
+      id: categoryId,
     },
   });
   return deletedCat.parentId;

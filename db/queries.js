@@ -50,9 +50,19 @@ const addCategory = async (name, parentId) => {
   }
 };
 
+const deleteCategory = async (id) => {
+  const deletedCat = await prisma.category.delete({
+    where: {
+      id: id,
+    },
+  });
+  return deletedCat.parentId;
+};
+
 module.exports = {
   getCategories,
   getItems,
   getCategorybyID,
   addCategory,
+  deleteCategory,
 };

@@ -2,6 +2,10 @@ const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 
 async function main() {
+  // Delete all previous records to start with new DB
+  const deleteCategories = await prisma.category.deleteMany({});
+  const deleteItems = await prisma.item.deleteMany({});
+
   // Create root categories
   const electronics = await prisma.category.create({
     data: { name: "Electronics" },

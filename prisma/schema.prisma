@@ -23,10 +23,10 @@ model Category {
 }
 
 model Item {
-  id          String   @id @default(uuid())
+  id          String    @id @default(uuid())
   name        String
   quantity    Int
   description String?
-  category    Category @relation(fields: [categoryId], references: [id])
-  categoryId  String
+  category    Category? @relation(fields: [categoryId], references: [id])
+  categoryId  String?
 }

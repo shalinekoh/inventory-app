@@ -37,8 +37,22 @@ const getCategorybyID = async (id) => {
   }
 };
 
+const addCategory = async (name, parentId) => {
+  try {
+    await prisma.category.create({
+      data: {
+        name: name,
+        parentId: parentId,
+      },
+    });
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = {
   getCategories,
   getItems,
   getCategorybyID,
+  addCategory,
 };

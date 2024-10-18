@@ -31,8 +31,11 @@ categoryRouter.get("/:categoryId", async (req, res) => {
 });
 
 // add new category
-categoryRouter.post("/:categoryId", (req, res) => {
-  res.redirect(`/category/${req.params.categoryId}`);
+categoryRouter.post("/:categoryId", async (req, res) => {
+  const parentId = req.params.categoryId;
+  const categoryName = req.body.categoryName;
+  await db.addCategory(categoryName, parentId);
+  res.redirect(`/category/${parentId}`);
 });
 
 // display the form to add new category

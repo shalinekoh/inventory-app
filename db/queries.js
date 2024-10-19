@@ -96,6 +96,7 @@ const updateCategory = async (id, newName) => {
       name: newName,
     },
   });
+  return updateName.parentId;
 };
 
 module.exports = {

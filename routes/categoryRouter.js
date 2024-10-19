@@ -52,8 +52,12 @@ categoryRouter.post("/:categoryId?/delete", async (req, res) => {
 categoryRouter.post("/:categoryId/update", async (req, res) => {
   const newName = req.body.categoryName;
   const id = req.params.categoryId;
-  await db.updateCategory(id, newName);
-  res.redirect("/category");
+  const parentId = await db.updateCategory(id, newName);
+  if (parentId) {
+    res.redirect(`/category/${parentId}`);
+  } else {
+    res.redirect("/category/"); // Redirect to root or default category page if no parentId
+  }
 });
 
 module.exports = categoryRouter;

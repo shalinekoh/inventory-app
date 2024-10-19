@@ -41,7 +41,6 @@ categoryRouter.post("/:categoryId?", async (req, res) => {
 categoryRouter.post("/:categoryId?/delete", async (req, res) => {
   const id = req.params.categoryId;
   const parentId = await db.deleteCategory(id);
-  // res.redirect("/category");
   // Check if parentId exists and redirect accordingly
   if (parentId) {
     res.redirect(`/category/${parentId}`);
@@ -49,7 +48,12 @@ categoryRouter.post("/:categoryId?/delete", async (req, res) => {
     res.redirect("/category/"); // Redirect to root or default category page if no parentId
   }
 });
-// display the form to add new category
-categoryRouter.get("/:categoryId/subcategories", () => {});
+// display the form to edit category
+categoryRouter.post("/:categoryId/update", async (req, res) => {
+  const newName = req.body.categoryName;
+  const id = req.params.categoryId;
+  await db.updateCategory(id, newName);
+  res.redirect("/category");
+});
 
 module.exports = categoryRouter;

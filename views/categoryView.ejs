@@ -8,13 +8,40 @@
   <body>
     <h1><%= title %></h1>
     <%- include("forms/create-category", {parentId : parentId}) %>
+
     <ul>
       <!-- Display subcategories -->
       <% if (categories.length > 0) { %> <% categories.forEach((category) => {
       %>
       <li>
         <a href="/category/<%= category.id %>"><%= category.name %></a>
-        <button type="button" id="editBtn">Edit</button>
+
+        <!-- Add a class for edit buttons and dialogs to make them reusable -->
+        <button
+          type="button"
+          class="editBtn"
+          data-category-id="<%= category.id %>"
+          data-current-name="<%= category.name %>"
+        >
+          Edit
+        </button>
+
+        <!-- Dialog for each category -->
+        <dialog class="catDialog">
+          <h1>Rename category</h1>
+          <form method="POST" action="/category/<%= category.id %>/update">
+            <input
+              type="text"
+              name="categoryName"
+              placeholder="Enter the name here"
+              required
+            />
+            <button type="button" class="cancelBtn">Cancel</button>
+            <button type="submit">Enter</button>
+          </form>
+        </dialog>
+
+        <!-- Delete form -->
         <form method="POST" action="/category/<%=category.id %>/delete">
           <button type="submit">Delete</button>
         </form>
@@ -28,5 +55,31 @@
       <li><%= item.name %></li>
       <% }) %> <% } %>
     </ul>
+
+    <script>
+      // Select all edit buttons and dialogs
+      const editButtons = document.querySelectorAll(".editBtn");
+      const cancelButtons = document.querySelectorAll(".cancelBtn");
+
+      editButtons.forEach((editButton) => {
+        const categoryId = editButton.getAttribute("data-category-id");
+        const currentName = editButton.getAttribute("data-current-name");
+        const dialog = editButton.nextElementSibling; // The dialog is right after the button
+
+        editButton.addEventListener("click", () => {
+          const nameInput = dialog.querySelector('input[name="categoryName"]');
+          nameInput.value = currentName; // Pre-fill with the current category name
+          dialog.showModal(); // Show the dialog
+        });
+      });
+
+      // Add event listeners to cancel buttons to close dialogs
+      cancelButtons.forEach((cancelButton) => {
+        cancelButton.addEventListener("click", (e) => {
+          const dialog = cancelButton.closest("dialog");
+          dialog.close(); // Close the dialog
+        });
+      });
+    </script>
   </body>
 </html>

@@ -13,7 +13,7 @@ app.use(express.urlencoded({ extended: false }));
 
 app.use("/item", itemRouter);
 app.use("/category", categoryRouter);
-app.use("/", (req, res) => res.send("HI"));
+app.use("/", (req, res) => res.render("dashboardView"));
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => console.log(`Server listening on ${PORT}`));

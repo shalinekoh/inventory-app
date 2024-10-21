@@ -6,6 +6,7 @@
     <title><%= title %></title>
   </head>
   <body>
+    <%- include("header") %>
     <h1><%= title %></h1>
     <%- include("forms/create-category", {parentId : parentId}) %> <%
     if(parentId) { %> <%- include("forms/create-item", {parentId : parentId}) %>

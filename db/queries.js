@@ -50,15 +50,6 @@ const addCategory = async (name, parentId) => {
   }
 };
 
-// const deleteCategory = async (id) => {
-//   const deletedCat = await prisma.category.delete({
-//     where: {
-//       id: id,
-//     },
-//   });
-//   return deletedCat.parentId;
-// };
-
 const deleteCategory = async (categoryId) => {
   const parentId = getCategorybyID(categoryId).parentId;
   // First, delete all items associated with the current category
@@ -99,6 +90,36 @@ const updateCategory = async (id, newName) => {
   return updateName.parentId;
 };
 
+const findAllItems = async () => {
+  return await prisma.item.findMany({});
+};
+
+const deleteItem = async (id) => {
+  return await prisma.item.delete({
+    where: { id: id },
+  });
+};
+
+const updateItem = async (id, name, quantity) => {
+  return await prisma.item.update({
+    where: { id: id },
+    data: {
+      name: name,
+      quantity: quantity,
+    },
+  });
+};
+
+const addItem = async (name, quantity, categoryId) => {
+  return await prisma.item.create({
+    data: {
+      name: name,
+      quantity: quantity,
+      categoryId: categoryId,
+    },
+  });
+};
+
 module.exports = {
   getCategories,
   getItems,
@@ -106,4 +127,8 @@ module.exports = {
   addCategory,
   deleteCategory,
   updateCategory,
+  findAllItems,
+  deleteItem,
+  updateItem,
+  addItem,
 };

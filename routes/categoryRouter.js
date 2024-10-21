@@ -60,4 +60,12 @@ categoryRouter.post("/:categoryId/update", async (req, res) => {
   }
 });
 
+categoryRouter.post("/:categoryId/item", async (req, res) => {
+  const categoryId = req.params.categoryId;
+  const { itemName, itemQuantity } = req.body;
+  await db.addItem(itemName, parseInt(itemQuantity), categoryId);
+
+  res.redirect(`/category/${categoryId}`);
+});
+
 module.exports = categoryRouter;

@@ -7,7 +7,9 @@
   </head>
   <body>
     <h1><%= title %></h1>
-    <%- include("forms/create-category", {parentId : parentId}) %>
+    <%- include("forms/create-category", {parentId : parentId}) %> <%
+    if(parentId) { %> <%- include("forms/create-item", {parentId : parentId}) %>
+    <% } %>
 
     <ul>
       <!-- Display subcategories -->
@@ -53,6 +55,31 @@
       <!-- Display items -->
       <% if (items.length > 0) { %> <% items.forEach((item) => { %>
       <li><%= item.name %></li>
+      <button
+        type="button"
+        class="itemEditBtn"
+        data-item-id="<%= item.id%>"
+        data-item-name="<%= item.name %>"
+        data-item-quantity="<%=item.quantity %>"
+      >
+        Edit
+      </button>
+      <dialog id="dialog-<%=item.id%>">
+        <form method="POST" action="/item/<%=item.id%>/update">
+          <input
+            type="text"
+            name="itemName"
+            placeholder="Rename item"
+            required
+          />
+          <input type="number" name="itemQuantity" min="1" required />
+          <button type="button" id="cancel-<%=item.id%>">Cancel</button>
+          <button type="submit">Enter</button>
+        </form>
+      </dialog>
+      <form method="POST" action="/item/<%=item.id%>/delete">
+        <button type="submit">Delete</button>
+      </form>
       <% }) %> <% } %>
     </ul>
 
@@ -78,6 +105,29 @@
         cancelButton.addEventListener("click", (e) => {
           const dialog = cancelButton.closest("dialog");
           dialog.close(); // Close the dialog
+        });
+      });
+
+      const itemEditButtons = document.querySelectorAll(".itemEditBtn");
+      itemEditButtons.forEach((editBtn) => {
+        const itemId = editBtn.getAttribute("data-item-id");
+        const currentName = editBtn.getAttribute("data-item-name");
+        const currentQuantity = editBtn.getAttribute("data-item-quantity");
+        const dialog = document.getElementById(`dialog-${itemId}`);
+        const cancelBtn = document.getElementById(`cancel-${itemId}`);
+
+        editBtn.addEventListener("click", () => {
+          const nameInput = dialog.querySelector('input[name="itemName"]');
+          nameInput.value = currentName;
+          const quantityInput = dialog.querySelector(
+            'input[name="itemQuantity"]'
+          );
+          quantityInput.value = currentQuantity;
+          dialog.showModal();
+        });
+
+        cancelBtn.addEventListener("click", () => {
+          dialog.close();
         });
       });
     </script>

@@ -4,85 +4,166 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%= title %></title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
+  <body class="bg-gray-100">
     <%- include("header") %>
-    <h1><%= title %></h1>
-    <%- include("forms/create-category", {parentId : parentId}) %> <%
-    if(parentId) { %> <%- include("forms/create-item", {parentId : parentId}) %>
-    <% } %>
 
-    <ul>
-      <!-- Display subcategories -->
-      <% if (categories.length > 0) { %> <% categories.forEach((category) => {
-      %>
-      <li>
-        <a href="/category/<%= category.id %>"><%= category.name %></a>
+    <div class="pt-20 px-4">
+      <h2 class="text-3xl font-semibold mb-4"><%= title %></h2>
 
-        <!-- Add a class for edit buttons and dialogs to make them reusable -->
-        <button
-          type="button"
-          class="editBtn"
-          data-category-id="<%= category.id %>"
-          data-current-name="<%= category.name %>"
-        >
-          Edit
-        </button>
+      <div class="space-y-6">
+        <div class="flex space-x-4 mb-4">
+          <%- include("forms/create-category", { parentId: parentId }) %> <% if
+          (parentId) { %> <%- include("forms/create-item", { parentId: parentId
+          }) %> <% } %>
+        </div>
 
-        <!-- Dialog for each category -->
-        <dialog class="catDialog">
-          <h1>Rename category</h1>
-          <form method="POST" action="/category/<%= category.id %>/update">
-            <input
-              type="text"
-              name="categoryName"
-              placeholder="Enter the name here"
-              required
-            />
-            <button type="button" class="cancelBtn">Cancel</button>
-            <button type="submit">Enter</button>
-          </form>
-        </dialog>
+        <ul class="space-y-4">
+          <!-- Display subcategories -->
+          <% if (categories.length > 0) { %> <% categories.forEach((category) =>
+          { %>
+          <li
+            class="flex items-center justify-between p-4 bg-white shadow rounded"
+          >
+            <a
+              href="/category/<%= category.id %>"
+              class="text-xl font-bold text-blue-600 hover:underline"
+            >
+              <%= category.name %>
+            </a>
 
-        <!-- Delete form -->
-        <form method="POST" action="/category/<%=category.id %>/delete">
-          <button type="submit">Delete</button>
-        </form>
-      </li>
-      <% }) %> <% } %>
-    </ul>
+            <div class="flex space-x-2">
+              <button
+                type="button"
+                class="editBtn bg-blue-600 text-white rounded p-2 hover:bg-blue-700 transition duration-200"
+                data-category-id="<%= category.id %>"
+                data-current-name="<%= category.name %>"
+              >
+                Edit
+              </button>
 
-    <ul>
-      <!-- Display items -->
-      <% if (items.length > 0) { %> <% items.forEach((item) => { %>
-      <li><%= item.name %></li>
-      <button
-        type="button"
-        class="itemEditBtn"
-        data-item-id="<%= item.id%>"
-        data-item-name="<%= item.name %>"
-        data-item-quantity="<%=item.quantity %>"
-      >
-        Edit
-      </button>
-      <dialog id="dialog-<%=item.id%>">
-        <form method="POST" action="/item/<%=item.id%>/update">
-          <input
-            type="text"
-            name="itemName"
-            placeholder="Rename item"
-            required
-          />
-          <input type="number" name="itemQuantity" min="1" required />
-          <button type="button" id="cancel-<%=item.id%>">Cancel</button>
-          <button type="submit">Enter</button>
-        </form>
-      </dialog>
-      <form method="POST" action="/item/<%=item.id%>/delete">
-        <button type="submit">Delete</button>
-      </form>
-      <% }) %> <% } %>
-    </ul>
+              <!-- Dialog for each category -->
+              <dialog class="catDialog p-4">
+                <h1 class="text-lg font-semibold mb-2">Rename category</h1>
+                <form
+                  method="POST"
+                  action="/category/<%= category.id %>/update"
+                  class="flex flex-col"
+                >
+                  <input
+                    type="text"
+                    name="categoryName"
+                    placeholder="Enter the name here"
+                    required
+                    class="border rounded p-2 mb-2"
+                  />
+                  <div class="flex justify-between">
+                    <button
+                      type="button"
+                      class="cancelBtn text-gray-600 hover:text-gray-800"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      class="bg-blue-600 text-white rounded p-2 hover:bg-blue-700 transition duration-200"
+                    >
+                      Enter
+                    </button>
+                  </div>
+                </form>
+              </dialog>
+
+              <!-- Delete form -->
+              <form method="POST" action="/category/<%= category.id %>/delete">
+                <button
+                  type="submit"
+                  class="bg-red-600 text-white rounded p-2 hover:bg-red-700 transition duration-200"
+                >
+                  Delete
+                </button>
+              </form>
+            </div>
+          </li>
+          <% }) %> <% } %>
+        </ul>
+
+        <ul class="space-y-4">
+          <!-- Display items -->
+          <% if (items.length > 0) { %> <% items.forEach((item) => { %>
+          <li
+            class="flex items-center justify-between p-4 bg-white shadow rounded"
+          >
+            <span class="text-xl font-bold"><%= item.name %></span>
+            <span class="text-gray-600">Quantity: <%= item.quantity %></span>
+            <div class="flex space-x-2">
+              <button
+                type="button"
+                class="itemEditBtn bg-blue-600 text-white rounded p-2 hover:bg-blue-700 transition duration-200"
+                data-item-id="<%= item.id %>"
+                data-item-name="<%= item.name %>"
+                data-item-quantity="<%= item.quantity %>"
+              >
+                Edit
+              </button>
+
+              <!-- Edit Dialog -->
+              <dialog id="dialog-<%= item.id %>" class="p-4">
+                <h1 class="text-lg font-semibold mb-2">Rename item</h1>
+                <form
+                  method="POST"
+                  action="/item/<%= item.id %>/update"
+                  class="flex flex-col"
+                >
+                  <input
+                    type="text"
+                    name="itemName"
+                    placeholder="Rename item"
+                    required
+                    class="border rounded p-2 mb-2"
+                  />
+                  <input
+                    type="number"
+                    name="itemQuantity"
+                    min="1"
+                    required
+                    class="border rounded p-2 mb-4"
+                  />
+                  <div class="flex justify-between">
+                    <button
+                      type="button"
+                      id="cancel-<%= item.id %>"
+                      class="text-gray-600 hover:text-gray-800"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      class="bg-blue-600 text-white rounded p-2 hover:bg-blue-700 transition duration-200"
+                    >
+                      Enter
+                    </button>
+                  </div>
+                </form>
+              </dialog>
+
+              <!-- Delete form -->
+              <form method="POST" action="/item/<%= item.id %>/delete">
+                <button
+                  type="submit"
+                  class="bg-red-600 text-white rounded p-2 hover:bg-red-700 transition duration-200"
+                >
+                  Delete
+                </button>
+              </form>
+            </div>
+          </li>
+          <% }) %> <% } %>
+        </ul>
+      </div>
+    </div>
 
     <script>
       // Select all edit buttons and dialogs

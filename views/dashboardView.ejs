@@ -5,10 +5,26 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Inventory App</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <h1>Inventory App</h1>
-    <a href="/category">View Categories</a>
-    <a href="/item">View Items</a>
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white shadow-md rounded-lg p-8 max-w-md text-center">
+      <h1 class="text-3xl font-bold text-gray-800 mb-6">Inventory App</h1>
+      <div class="flex justify-center space-x-6">
+        <a
+          href="/category"
+          class="text-lg text-blue-600 hover:text-blue-800 hover:underline"
+        >
+          View Categories
+        </a>
+        <a
+          href="/item"
+          class="text-lg text-blue-600 hover:text-blue-800 hover:underline"
+        >
+          View Items
+        </a>
+      </div>
+    </div>
   </body>
 </html>

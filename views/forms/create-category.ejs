@@ -1,23 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Category</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <button type="button" id="categoryBtn">Add Category</button>
-    <dialog id="catDialog">
-      <h1>Add new category</h1>
-      <form method="POST" action="/category/<%= parentId %>">
-        <input
-          type="text"
-          name="categoryName"
-          placeholder="Enter the name here"
-          required
-        />
-        <button type="button" id="cancelBtn">Cancel</button>
-        <button type="submit">Enter</button>
-      </form>
-    </dialog>
+  <body class="bg-gray-100 h-screen flex items-center justify-center">
+    <div class="text-center">
+      <button
+        type="button"
+        id="categoryBtn"
+        class="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 transition duration-200"
+      >
+        Add Category
+      </button>
+      <dialog id="catDialog" class="p-4 rounded shadow-lg">
+        <h1 class="text-lg font-semibold mb-2">Add New Category</h1>
+        <form
+          method="POST"
+          action="/category/<%= parentId %>"
+          class="flex flex-col"
+        >
+          <input
+            type="text"
+            name="categoryName"
+            placeholder="Enter the name here"
+            required
+            class="border rounded p-2 mb-2"
+          />
+          <div class="flex justify-between">
+            <button
+              type="button"
+              id="cancelBtn"
+              class="text-gray-600 hover:text-gray-800"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 transition duration-200"
+            >
+              Enter
+            </button>
+          </div>
+        </form>
+      </dialog>
+    </div>
 
     <script>
       const catDialog = document.getElementById("catDialog");

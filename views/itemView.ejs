@@ -1,35 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Items</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
+  <body class="bg-gray-100">
     <%- include("header.ejs") %>
-    <h1>Items</h1>
-    <% items.forEach((item) => { %>
-    <li><%=item.name%></li>
-    <li><%= item.quantity%></li>
-    <button
-      type="button"
-      class="editBtn"
-      data-item-id="<%= item.id%>"
-      data-item-name="<%= item.name %>"
-      data-item-quantity="<%=item.quantity %>"
-    >
-      Edit
-    </button>
-    <dialog id="dialog-<%=item.id%>">
-      <form method="POST" action="/item/<%=item.id%>/update">
-        <input type="text" name="itemName" placeholder="Rename item" required />
-        <input type="number" name="itemQuantity" min="1" required />
-        <button type="button" id="cancel-<%=item.id%>">Cancel</button>
-        <button type="submit">Enter</button>
-      </form>
-    </dialog>
-    <form method="POST" action="/item/<%=item.id%>/delete">
-      <button type="submit">Delete</button>
-    </form>
-    <% }); %>
+
+    <div class="pt-20 px-4">
+      <h2 class="text-3xl font-semibold mb-4">Items</h2>
+
+      <ul class="space-y-4">
+        <% items.forEach((item) => { %>
+        <li
+          class="flex items-center justify-between p-4 bg-white shadow rounded"
+        >
+          <div class="flex-1">
+            <h2 class="text-xl font-bold"><%= item.name %></h2>
+            <p class="text-gray-600">Quantity: <%= item.quantity %></p>
+          </div>
+          <div class="flex space-x-2">
+            <button
+              type="button"
+              class="editBtn bg-blue-600 text-white rounded p-2 hover:bg-blue-700 transition duration-200"
+              data-item-id="<%= item.id %>"
+              data-item-name="<%= item.name %>"
+              data-item-quantity="<%= item.quantity %>"
+            >
+              Edit
+            </button>
+
+            <!-- Edit Dialog -->
+            <dialog id="dialog-<%= item.id %>" class="p-4">
+              <form
+                method="POST"
+                action="/item/<%= item.id %>/update"
+                class="flex flex-col"
+              >
+                <label for="itemName" class="text-sm font-medium"
+                  >Rename item:</label
+                >
+                <input
+                  type="text"
+                  name="itemName"
+                  placeholder="Rename item"
+                  required
+                  class="border rounded p-2 mb-2"
+                />
+                <label for="itemQuantity" class="text-sm font-medium"
+                  >Quantity:</label
+                >
+                <input
+                  type="number"
+                  name="itemQuantity"
+                  min="1"
+                  required
+                  class="border rounded p-2 mb-4"
+                />
+                <div class="flex justify-between">
+                  <button
+                    type="button"
+                    id="cancel-<%= item.id %>"
+                    class="text-gray-600 hover:text-gray-800"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    class="bg-blue-600 text-white rounded p-2 hover:bg-blue-700 transition duration-200"
+                  >
+                    Enter
+                  </button>
+                </div>
+              </form>
+            </dialog>
+
+            <!-- Delete Form -->
+            <form method="POST" action="/item/<%= item.id %>/delete">
+              <button
+                type="submit"
+                class="bg-red-600 text-white rounded p-2 hover:bg-blue-700 transition duration-200"
+              >
+                Delete
+              </button>
+            </form>
+          </div>
+        </li>
+        <% }); %>
+      </ul>
+    </div>
+
     <script>
       const editButtons = document.querySelectorAll(".editBtn");
       editButtons.forEach((editBtn) => {

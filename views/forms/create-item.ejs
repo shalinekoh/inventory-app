@@ -1,29 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Document</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Item</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body>
-    <button type="button" id="itemBtn">Add Item</button>
-    <dialog id="itemDialog">
-      <h1>Add new item</h1>
-      <form method="POST" action="/category/<%=parentId%>/item">
-        <input
-          type="text"
-          name="itemName"
-          placeholder="Enter the name here"
-          required
-        />
-        <input
-          type="number"
-          name="itemQuantity"
-          placeholder="e.g. 10"
-          required
-        />
-        <button type="button" id="itemCancelBtn">Cancel</button>
-        <button type="submit">Enter</button>
-      </form>
-    </dialog>
+  <body class="bg-gray-100 h-screen flex items-center justify-center">
+    <div class="text-center">
+      <button
+        type="button"
+        id="itemBtn"
+        class="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 transition duration-200"
+      >
+        Add Item
+      </button>
+      <dialog id="itemDialog" class="p-4 rounded shadow-lg">
+        <h1 class="text-lg font-semibold mb-2">Add New Item</h1>
+        <form
+          method="POST"
+          action="/category/<%= parentId %>/item"
+          class="flex flex-col"
+        >
+          <input
+            type="text"
+            name="itemName"
+            placeholder="Enter the name here"
+            required
+            class="border rounded p-2 mb-2"
+          />
+          <input
+            type="number"
+            name="itemQuantity"
+            placeholder="e.g. 10"
+            required
+            class="border rounded p-2 mb-2"
+          />
+          <div class="flex justify-between">
+            <button
+              type="button"
+              id="itemCancelBtn"
+              class="text-gray-600 hover:text-gray-800"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              class="bg-blue-600 text-white rounded px-4 py-2 hover:bg-blue-700 transition duration-200"
+            >
+              Enter
+            </button>
+          </div>
+        </form>
+      </dialog>
+    </div>
 
     <script>
       const itemDialog = document.getElementById("itemDialog");
